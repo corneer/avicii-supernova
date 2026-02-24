@@ -420,6 +420,7 @@ e15:["Waiting for Love","The Nights","Wake Me Up","Hey Brother","Levels","Addict
 e16:["Waiting for Love","Without You","Lonely Together","The Nights","Wake Me Up","Levels","Hey Brother","Friend of Mine","Gonna Love Ya","For a Better Day","Broken Arrows","Sunset Jesus"],
 e17:["Lonely Together","Without You","Wake Me Up","Levels","Hey Brother","Waiting for Love","The Nights","Friend of Mine","Sunset Jesus","You Be Love","Gonna Love Ya","For You"]
 };
+const nodeData=V.map(v=>({date:v[0],venue:v[1].replace(/\n/g,' '),location:v[2],songs:S[v[3]]||[]}));
 
 /* ── Stats ───────────────────────────────────────── */
 const swedenShows = V.filter(v=>v[2].includes('SWEDEN'));
