@@ -246,33 +246,46 @@ canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;}
 <!-- Hidden sidebar toggle — 14x14px corner dot -->
 <div id="sidebar-toggle" title="Settings"></div>
 
-<!-- Dev sidebar -->
+<!-- Dev sidebar — IDs must match gv() calls in WebGL engine -->
 <div id="sidebar">
   <div class="pane-header" data-pane="pNebula"><span>Nebula</span><span class="arrow">▶</span></div>
   <div class="pane-body" id="pNebula">
-    <div class="ctrl"><label>Density</label><input type="range" id="uDensity" min="0.1" max="3" step="0.05" value="1.2"><span id="vDensity">1.20</span></div>
-    <div class="ctrl"><label>Brightness</label><input type="range" id="uBrightness" min="0.1" max="3" step="0.05" value="1.1"><span id="vBrightness">1.10</span></div>
-    <div class="ctrl"><label>Turbulence</label><input type="range" id="uTurbulence" min="0.1" max="3" step="0.05" value="1.0"><span id="vTurbulence">1.00</span></div>
-    <div class="ctrl"><label>Color Shift</label><input type="range" id="uColorShift" min="-1" max="1" step="0.05" value="0"><span id="vColorShift">0.00</span></div>
-    <div class="ctrl"><label>Glow</label><input type="range" id="uGlow" min="0" max="2" step="0.05" value="0.8"><span id="vGlow">0.80</span></div>
-    <div class="ctrl"><label>Bloom Mix</label><input type="range" id="uBloomMix" min="0" max="1" step="0.05" value="0.5"><span id="vBloomMix">0.50</span></div>
+    <div class="ctrl"><label>Center mul</label><input type="range" id="rCenterMul" min="0" max="15" step="0.1" value="7"><span id="vCenterMul">7.0</span></div>
+    <div class="ctrl"><label>Edge mul</label><input type="range" id="rEdgeMul" min="0" max="5" step="0.1" value="1.5"><span id="vEdgeMul">1.5</span></div>
+    <div class="ctrl"><label>Brightness</label><input type="range" id="rBri" min="0.1" max="1.5" step="0.01" value="0.6"><span id="vBri">0.6</span></div>
+    <div class="ctrl"><label>Bloom</label><input type="range" id="rBloom" min="0" max="5" step="0.05" value="1.75"><span id="vBloom">1.75</span></div>
+    <div class="ctrl"><label>Ridged</label><input type="range" id="rRidge" min="0" max="1" step="0.01" value="1"><span id="vRidge">1.0</span></div>
+    <div class="ctrl"><label>Spiral</label><input type="range" id="rSpiral" min="0" max="6" step="0.1" value="5.7"><span id="vSpiral">5.7</span></div>
+    <div class="ctrl"><label>FBM freq</label><input type="range" id="rFbmFreq" min="10" max="150" step="1" value="10"><span id="vFbmFreq">10</span></div>
+    <div class="ctrl"><label>FBM str</label><input type="range" id="rFbmStr" min="0" max="3" step="0.05" value="0.2"><span id="vFbmStr">0.2</span></div>
+    <div class="ctrl"><label>Opacity</label><input type="range" id="rOpacity" min="0.05" max="1" step="0.01" value="1"><span id="vOpacity">1.0</span></div>
   </div>
   <div class="pane-header" data-pane="pStars"><span>Stars</span><span class="arrow">▶</span></div>
   <div class="pane-body" id="pStars">
-    <div class="ctrl"><label>Count</label><input type="range" id="uStarCount" min="0" max="1" step="0.05" value="0.5"><span id="vStarCount">0.50</span></div>
-    <div class="ctrl"><label>Size</label><input type="range" id="uStarSize" min="0.2" max="3" step="0.05" value="1.0"><span id="vStarSize">1.00</span></div>
-    <div class="ctrl"><label>Twinkle</label><input type="range" id="uTwinkle" min="0" max="1" step="0.05" value="0.4"><span id="vTwinkle">0.40</span></div>
+    <div class="ctrl"><label>Star bri</label><input type="range" id="rStarBri" min="0" max="5" step="0.05" value="0"><span id="vStarBri">0</span></div>
+    <div class="ctrl"><label>Star size</label><input type="range" id="rStarSize" min="0.1" max="3" step="0.05" value="0.3"><span id="vStarSize">0.3</span></div>
+    <div class="ctrl"><label>Star bloom</label><input type="range" id="rStarBloom" min="0" max="5" step="0.05" value="0"><span id="vStarBloom">0</span></div>
+    <div class="ctrl"><label>Bloom rad</label><input type="range" id="rStarBloomRad" min="1" max="8" step="0.5" value="2"><span id="vStarBloomRad">2</span></div>
   </div>
   <div class="pane-header" data-pane="pCamera"><span>Camera</span><span class="arrow">▶</span></div>
   <div class="pane-body" id="pCamera">
-    <div class="ctrl"><label>FOV</label><input type="range" id="uFOV" min="0.3" max="2" step="0.05" value="0.9"><span id="vFOV">0.90</span></div>
-    <div class="ctrl"><label>Near Clip</label><input type="range" id="uNearClip" min="0.01" max="1" step="0.01" value="0.1"><span id="vNearClip">0.10</span></div>
+    <div class="ctrl"><label>Spin speed</label><input type="range" id="rSpinSpeed" min="0" max="1" step="0.01" value="0.35"><span id="vSpinSpeed">0.35</span></div>
   </div>
   <div class="pane-header" data-pane="pNodes"><span>Nodes</span><span class="arrow">▶</span></div>
   <div class="pane-body" id="pNodes">
-    <div class="ctrl"><label>Node Size</label><input type="range" id="uNodeSize" min="0.5" max="3" step="0.05" value="1.0"><span id="vNodeSize">1.00</span></div>
-    <div class="ctrl"><label>Node Bright</label><input type="range" id="uNodeBrightness" min="0.1" max="3" step="0.05" value="1.0"><span id="vNodeBrightness">1.00</span></div>
-    <div class="ctrl"><label>Hover Glow</label><input type="range" id="uHoverGlow" min="0" max="3" step="0.05" value="1.0"><span id="vHoverGlow">1.00</span></div>
+    <div class="ctrl"><label>Node size</label><input type="range" id="rNodeSize" min="0.5" max="8" step="0.1" value="0.5"><span id="vNodeSize">0.5</span></div>
+    <div class="ctrl"><label>Hover size</label><input type="range" id="rNodeHoverSize" min="1" max="10" step="0.1" value="3"><span id="vNodeHoverSize">3.0</span></div>
+    <div class="ctrl"><label>Hover radius</label><input type="range" id="rHoverRadius" min="5" max="100" step="1" value="60"><span id="vHoverRadius">60</span></div>
+    <div class="ctrl"><label>Circle size</label><input type="range" id="rCircleSize" min="10" max="120" step="1" value="50"><span id="vCircleSize">50</span></div>
+    <div class="ctrl"><label>Circle thick</label><input type="range" id="rCircleThick" min="0.01" max="0.15" step="0.005" value="0.04"><span id="vCircleThick">0.04</span></div>
+    <div class="ctrl"><label>Op near</label><input type="range" id="rCircleOpNear" min="0" max="1" step="0.01" value="0.5"><span id="vCircleOpNear">0.5</span></div>
+    <div class="ctrl"><label>Op far</label><input type="range" id="rCircleOpFar" min="0" max="0.5" step="0.01" value="0.03"><span id="vCircleOpFar">0.03</span></div>
+    <div class="ctrl"><label>Fall near</label><input type="range" id="rCircleFallNear" min="0.5" max="5" step="0.1" value="1"><span id="vCircleFallNear">1.0</span></div>
+    <div class="ctrl"><label>Fall far</label><input type="range" id="rCircleFallFar" min="3" max="20" step="0.5" value="9"><span id="vCircleFallFar">9.0</span></div>
+    <div class="ctrl"><label>Card scale</label><input type="range" id="rCardScale" min="0.3" max="2" step="0.05" value="0.55"><span id="vCardScale">0.55</span></div>
+    <div class="ctrl"><label>Card ref dist</label><input type="range" id="rCardRefDist" min="1" max="15" step="0.5" value="6"><span id="vCardRefDist">6.0</span></div>
+    <div class="ctrl"><label>Card min scale</label><input type="range" id="rCardMinScale" min="0.05" max="1" step="0.05" value="0.15"><span id="vCardMinScale">0.15</span></div>
+    <div class="ctrl"><label>Card max scale</label><input type="range" id="rCardMaxScale" min="1" max="5" step="0.1" value="2.5"><span id="vCardMaxScale">2.5</span></div>
   </div>
 </div>
 
