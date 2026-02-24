@@ -389,6 +389,17 @@ e16:["Waiting for Love","Without You","Lonely Together","The Nights","Wake Me Up
 e17:["Lonely Together","Without You","Wake Me Up","Levels","Hey Brother","Waiting for Love","The Nights","Friend of Mine","Sunset Jesus","You Be Love","Gonna Love Ya","For You"]
 };
 
+/* ── Stats ───────────────────────────────────────── */
+const swedenShows = V.filter(v=>v[2].includes('SWEDEN'));
+const bigVMap = {'ERICSSON\nGLOBE':16000,'MADISON SQUARE\nGARDEN':20000,'O2 ARENA':20000,'ZIGGO DOME':17000,'HALLENSTADION':11000,'EARLS COURT':19000};
+let bigShow=null,bigN=0;
+V.forEach(v=>{const e=bigVMap[v[1]];if(e&&e>bigN){bigN=e;bigShow=v;}});
+
+// Longest set: era with most songs
+const eraLengths = Object.entries(S).map(([era,songs])=>({era,n:songs.length})).sort((a,b)=>b.n-a.n);
+const longestEra = eraLengths[0];
+const longestShow = V.find(v=>v[3]===longestEra.era) || V[0];
+
 const ANSWERS = [
   {
     date: '2010 – 2017',
