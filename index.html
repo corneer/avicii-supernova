@@ -803,7 +803,7 @@ const cU={};['uS','uB','uA'].forEach(n=>cU[n]=gl.getUniformLocation(compProg,n))
 
 const noiseTex=mkNoiseTex(),ditherTex=mkNoiseTex();
 function hex2rgb(h){let v=parseInt(h.slice(1),16);return[(v>>16&255)/255,(v>>8&255)/255,(v&255)/255];}
-function gv(id){return+document.getElementById(id).value;}
+function gv(id){const el=document.getElementById(id);return el?+el.value:0;}
 function gc(id){return hex2rgb(document.getElementById(id).value);}
 document.querySelectorAll('input[type=range]').forEach(el=>{let v=document.getElementById('v'+el.id.slice(1));if(v)el.addEventListener('input',()=>v.textContent=el.value);});
 
@@ -868,19 +868,6 @@ function updateCard(camF,spinF,ox,oy,oz,W,H){
     ringEl.classList.remove('visible');
     centerCardEl.classList.remove('visible');
     centerNode=-1;
-  }
-}
-  if(best>=0&&best<nodeData.length){
-    activeNode=best;let d=nodeData[best];
-    cardDate.textContent=d.date;cardVenue.innerHTML=d.venue.replace(/\n/g,'<br>');cardLocation.innerHTML=d.location.replace(/\n/g,'<br>');
-    cardSongs.innerHTML=d.songs.map(s=>'<li>'+s+'</li>').join('');
-    let cardScale=gv('rCardScale'),refDist=gv('rCardRefDist'),minS=gv('rCardMinScale'),maxS=gv('rCardMaxScale');
-    let depthScale=cardScale*refDist/Math.max(bestD,.5);depthScale=Math.max(minS,Math.min(depthScale,maxS));
-    cardEl.style.left=bestSx/dpr+'px';cardEl.style.top=(innerHeight-bestSy/dpr)+'px';
-    cardEl.style.transform='scale('+depthScale.toFixed(3)+')';cardEl.classList.add('visible');
-  } else {
-    if(cardEl.classList.contains('visible')){cardEl.style.transform='scale(0)';cardEl.classList.remove('visible');}
-    activeNode=-1;
   }
 }
 
