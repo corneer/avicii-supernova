@@ -67,18 +67,21 @@ canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;}
   font-size:14px;font-weight:500;letter-spacing:-0.02em;
   color:#fff;
 }
+/* cursor sits inline immediately after last typed character */
 #ui-cursor{
-  display:inline-block;width:2px;height:0.9em;
-  background:#fff;margin-left:2px;vertical-align:middle;
-  animation:blink 0.8s step-end infinite;
+  display:inline-block;
+  width:1.5px;height:1em;
+  background:#fff;
+  margin-left:1px;
+  vertical-align:text-bottom;
+  animation:blink 0.75s step-end infinite;
 }
 
-/* Astronaut */
+/* Astronaut — drifting in the nebula, upper-left quadrant */
 #ui-astro{
-  position:absolute;left:50%;top:50%;
-  transform:translate(-50%,-50%);
+  position:absolute;left:28%;top:32%;
   width:80px;height:80px;
-  animation:float 7s ease-in-out infinite;
+  animation:astroFloat 9s ease-in-out infinite;
   filter:drop-shadow(0 0 14px rgba(120,160,255,.45));
   pointer-events:none;
 }
@@ -180,12 +183,37 @@ canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;}
 }
 
 @keyframes float{
-  0%,100%{transform:translate(-50%,-50%) rotate(-3deg);}
-  33%{transform:translate(-50%,-50%) rotate(2deg) translateY(-12px);}
-  66%{transform:translate(-50%,-50%) rotate(-1deg) translateY(-6px);}
+  0%,100%{transform:translateY(0) rotate(-3deg);}
+  33%{transform:translateY(-14px) rotate(2deg);}
+  66%{transform:translateY(-7px) rotate(-1deg);}
 }
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
-#sidebar,#nodeCard,#info,#old-drawer,#drawer-tab{display:none!important;}
+@keyframes astroFloat{
+  0%  {transform:translate(0px,  0px)   rotate(-4deg);}
+  20% {transform:translate(6px, -18px)  rotate(2deg);}
+  40% {transform:translate(-4px,-28px)  rotate(-2deg);}
+  60% {transform:translate(8px, -16px)  rotate(3deg);}
+  80% {transform:translate(-6px, -8px)  rotate(-1deg);}
+  100%{transform:translate(0px,  0px)   rotate(-4deg);}
+}
+@keyframes blink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+/* ── SIDEBAR ─────────────────────────────────────── */
+#sidebar{position:fixed;top:10px;right:10px;z-index:200;width:250px;display:flex;flex-direction:column;gap:0;}
+.pane-header{background:rgba(0,0,0,.85);border:1px solid #444;border-bottom:none;padding:8px 12px;color:#8af;font:12px monospace;font-weight:bold;cursor:pointer;user-select:none;display:flex;justify-content:space-between;align-items:center;}
+.pane-header:first-child{border-radius:6px 6px 0 0;}
+.pane-header:hover{background:rgba(30,40,60,.9);}
+.pane-header .arrow{color:#666;font-size:10px;transition:transform .25s;}
+.pane-header.active .arrow{transform:rotate(90deg);}
+.pane-body{background:rgba(0,0,0,.8);border:1px solid #444;border-top:none;padding:0 12px;max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1),padding .35s;color:#ccc;font:12px monospace;}
+.pane-body.open{max-height:70vh;padding:8px 12px 12px;overflow-y:auto;}
+#sidebar>*:last-child{border-radius:0 0 6px 6px;}
+.pane-body label{display:flex;justify-content:space-between;align-items:center;margin:4px 0;}
+.pane-body input[type=color]{width:50px;height:22px;border:none;background:none;cursor:pointer;}
+.pane-body input[type=range]{width:100px;}
+.pane-body .section{color:#8af;margin-top:10px;margin-bottom:4px;font-weight:bold;}
+.pane-body .section:first-child{margin-top:2px;}
+.pane-body .val{color:#888;width:36px;text-align:right;font-size:11px;}
+#info{position:fixed;bottom:10px;left:10px;color:#aaa;font:13px monospace;pointer-events:none;z-index:5;}
+#old-drawer,#drawer-tab{display:none!important;}
 </style>
 </head>
 <body>
@@ -255,10 +283,68 @@ canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;}
   </div>
 </div>
 
-<!-- hidden WebGL deps -->
-<div id="sidebar" style="display:none!important"><div class="pane-body" id="pNebula">
-<input type="color" id="cDense" value="#888899"><input type="color" id="cThin" value="#aaaabb"><input type="color" id="cCenter" value="#ccffff"><input type="range" id="rCenterMul" min="0" max="15" step="0.1" value="7"><span id="vCenterMul">7</span><input type="color" id="cEdge" value="#7a8780"><input type="range" id="rEdgeMul" min="0" max="5" step="0.1" value="1.5"><span id="vEdgeMul">1.5</span><input type="color" id="cStar" value="#7788cc"><input type="range" id="rStarBri" min="0" max="5" step="0.05" value="0"><span id="vStarBri">0</span><input type="color" id="cLight" value="#5588bb"><input type="range" id="rBloom" min="0" max="5" step="0.05" value="1.75"><span id="vBloom">1.75</span><input type="range" id="rRidge" min="0" max="1" step="0.01" value="1"><span id="vRidge">1</span><input type="range" id="rSpiral" min="0" max="6" step="0.1" value="5.7"><span id="vSpiral">5.7</span><input type="range" id="rFbmFreq" min="10" max="150" step="1" value="10"><span id="vFbmFreq">10</span><input type="range" id="rFbmStr" min="0" max="3" step="0.05" value="0.2"><span id="vFbmStr">0.2</span><input type="range" id="rBri" min="0.1" max="1.5" step="0.01" value="0.6"><span id="vBri">0.6</span><input type="range" id="rOpacity" min="0.05" max="1" step="0.01" value="1"><span id="vOpacity">1</span><input type="range" id="rStarSize" min="0.1" max="3" step="0.05" value="0.3"><span id="vStarSize">0.3</span><input type="range" id="rStarBloom" min="0" max="5" step="0.05" value="0"><span id="vStarBloom">0</span><input type="range" id="rStarBloomRad" min="1" max="8" step="0.5" value="2"><span id="vStarBloomRad">2</span><input type="range" id="rSpinSpeed" min="0" max="1" step="0.01" value="0.35"><span id="vSpinSpeed">0.35</span><input type="range" id="rNodeSize" min="0.5" max="8" step="0.1" value="0.5"><span id="vNodeSize">0.5</span><input type="range" id="rNodeHoverSize" min="1" max="10" step="0.1" value="3"><span id="vNodeHoverSize">3</span><input type="range" id="rHoverRadius" min="5" max="100" step="1" value="60"><span id="vHoverRadius">60</span><input type="color" id="cNodeColor" value="#ccddff"><input type="color" id="cNodeHoverColor" value="#ffffff"><input type="range" id="rCircleSize" min="10" max="120" step="1" value="50"><span id="vCircleSize">50</span><input type="range" id="rCircleThick" min="0.01" max="0.15" step="0.005" value="0.04"><span id="vCircleThick">0.04</span><input type="color" id="cCircleColor" value="#8899bb"><input type="range" id="rCircleOpNear" min="0" max="1" step="0.01" value="0.5"><span id="vCircleOpNear">0.5</span><input type="range" id="rCircleOpFar" min="0" max="0.5" step="0.01" value="0.03"><span id="vCircleOpFar">0.03</span><input type="range" id="rCircleFallNear" min="0.5" max="5" step="0.1" value="1"><span id="vCircleFallNear">1</span><input type="range" id="rCircleFallFar" min="3" max="20" step="0.5" value="9"><span id="vCircleFallFar">9</span><input type="range" id="rCardScale" min="0.3" max="2" step="0.05" value="0.55"><span id="vCardScale">0.55</span><input type="range" id="rCardRefDist" min="1" max="15" step="0.5" value="6"><span id="vCardRefDist">6</span><input type="range" id="rCardMinScale" min="0.05" max="1" step="0.05" value="0.15"><span id="vCardMinScale">0.15</span><input type="range" id="rCardMaxScale" min="1" max="5" step="0.1" value="2.5"><span id="vCardMaxScale">2.5</span>
-</div></div>
+<!-- SIDEBAR (dev controls, top right) -->
+<div id="sidebar">
+  <div class="pane-header" data-pane="pNebula"><span>Nebula</span><span class="arrow">&#9654;</span></div>
+  <div class="pane-body" id="pNebula">
+    <div class="section">Surface</div>
+    <label>Dense <input type="color" id="cDense" value="#888899"></label>
+    <label>Thin <input type="color" id="cThin" value="#aaaabb"></label>
+    <div class="section">Illumination</div>
+    <label>Center <input type="color" id="cCenter" value="#ccffff"></label>
+    <label>Center mul <input type="range" id="rCenterMul" min="0" max="15" step="0.1" value="7"><span class="val" id="vCenterMul">7</span></label>
+    <label>Edge <input type="color" id="cEdge" value="#7a8780"></label>
+    <label>Edge mul <input type="range" id="rEdgeMul" min="0" max="5" step="0.1" value="1.5"><span class="val" id="vEdgeMul">1.5</span></label>
+    <div class="section">Point Light</div>
+    <label>Star color <input type="color" id="cStar" value="#7788cc"></label>
+    <label>Star brightness <input type="range" id="rStarBri" min="0" max="5" step="0.05" value="0"><span class="val" id="vStarBri">0</span></label>
+    <label>Light color <input type="color" id="cLight" value="#5588bb"></label>
+    <label>Bloom strength <input type="range" id="rBloom" min="0" max="5" step="0.05" value="1.75"><span class="val" id="vBloom">1.75</span></label>
+    <div class="section">Detail</div>
+    <label>Ridged <input type="range" id="rRidge" min="0" max="1" step="0.01" value="1"><span class="val" id="vRidge">1</span></label>
+    <label>Spiral strength <input type="range" id="rSpiral" min="0" max="6" step="0.1" value="5.7"><span class="val" id="vSpiral">5.7</span></label>
+    <label>FBM frequency <input type="range" id="rFbmFreq" min="10" max="150" step="1" value="10"><span class="val" id="vFbmFreq">10</span></label>
+    <label>FBM strength <input type="range" id="rFbmStr" min="0" max="3" step="0.05" value="0.2"><span class="val" id="vFbmStr">0.2</span></label>
+    <div class="section">Tone</div>
+    <label>Brightness <input type="range" id="rBri" min="0.1" max="1.5" step="0.01" value="0.6"><span class="val" id="vBri">0.6</span></label>
+    <label>Opacity <input type="range" id="rOpacity" min="0.05" max="1" step="0.01" value="1"><span class="val" id="vOpacity">1</span></label>
+  </div>
+  <div class="pane-header" data-pane="pStars"><span>Stars</span><span class="arrow">&#9654;</span></div>
+  <div class="pane-body" id="pStars">
+    <div class="section">Appearance</div>
+    <label>Star size <input type="range" id="rStarSize" min="0.1" max="3" step="0.05" value="0.3"><span class="val" id="vStarSize">0.3</span></label>
+    <label>Star bloom <input type="range" id="rStarBloom" min="0" max="5" step="0.05" value="0"><span class="val" id="vStarBloom">0</span></label>
+    <label>Star bloom radius <input type="range" id="rStarBloomRad" min="1" max="8" step="0.5" value="2"><span class="val" id="vStarBloomRad">2</span></label>
+  </div>
+  <div class="pane-header" data-pane="pCamera"><span>Camera</span><span class="arrow">&#9654;</span></div>
+  <div class="pane-body" id="pCamera">
+    <div class="section">Rotation</div>
+    <label>Spin speed <input type="range" id="rSpinSpeed" min="0" max="1" step="0.01" value="0.35"><span class="val" id="vSpinSpeed">0.35</span></label>
+  </div>
+  <div class="pane-header" data-pane="pNodes"><span>Nodes</span><span class="arrow">&#9654;</span></div>
+  <div class="pane-body" id="pNodes">
+    <div class="section">Size</div>
+    <label>Default size <input type="range" id="rNodeSize" min="0.5" max="8" step="0.1" value="0.5"><span class="val" id="vNodeSize">0.5</span></label>
+    <label>Hover size <input type="range" id="rNodeHoverSize" min="1" max="10" step="0.1" value="3"><span class="val" id="vNodeHoverSize">3</span></label>
+    <label>Hover radius <input type="range" id="rHoverRadius" min="5" max="100" step="1" value="60"><span class="val" id="vHoverRadius">60</span></label>
+    <div class="section">Color</div>
+    <label>Node color <input type="color" id="cNodeColor" value="#ccddff"></label>
+    <label>Hover color <input type="color" id="cNodeHoverColor" value="#ffffff"></label>
+    <div class="section">Circle Indicators</div>
+    <label>Circle size <input type="range" id="rCircleSize" min="10" max="120" step="1" value="50"><span class="val" id="vCircleSize">50</span></label>
+    <label>Circle thickness <input type="range" id="rCircleThick" min="0.01" max="0.15" step="0.005" value="0.04"><span class="val" id="vCircleThick">0.04</span></label>
+    <label>Circle color <input type="color" id="cCircleColor" value="#8899bb"></label>
+    <label>Opacity near <input type="range" id="rCircleOpNear" min="0" max="1" step="0.01" value="0.5"><span class="val" id="vCircleOpNear">0.5</span></label>
+    <label>Opacity far <input type="range" id="rCircleOpFar" min="0" max="0.5" step="0.01" value="0.03"><span class="val" id="vCircleOpFar">0.03</span></label>
+    <label>Falloff near <input type="range" id="rCircleFallNear" min="0.5" max="5" step="0.1" value="1"><span class="val" id="vCircleFallNear">1</span></label>
+    <label>Falloff far <input type="range" id="rCircleFallFar" min="3" max="20" step="0.5" value="9"><span class="val" id="vCircleFallFar">9</span></label>
+    <div class="section">Info Card</div>
+    <label>Card scale <input type="range" id="rCardScale" min="0.3" max="2" step="0.05" value="0.55"><span class="val" id="vCardScale">0.55</span></label>
+    <label>Ref distance <input type="range" id="rCardRefDist" min="1" max="15" step="0.5" value="6"><span class="val" id="vCardRefDist">6</span></label>
+    <label>Min scale <input type="range" id="rCardMinScale" min="0.05" max="1" step="0.05" value="0.15"><span class="val" id="vCardMinScale">0.15</span></label>
+    <label>Max scale <input type="range" id="rCardMaxScale" min="1" max="5" step="0.1" value="2.5"><span class="val" id="vCardMaxScale">2.5</span></label>
+  </div>
+</div>
 <div id="nodeCard"><div class="card-inner"><div id="cardDate"></div><div id="cardVenue"></div><div id="cardLocation"></div><ul id="cardSongs"></ul></div></div>
 <div id="info"></div><div id="old-drawer"><div id="drawer-handle"></div><div id="drawer-content"><div id="drawer-stats"></div><div id="setlist-eras"></div></div></div><div id="drawer-tab"></div>
 
@@ -390,6 +476,16 @@ function openDrawer(i){
 }
 document.getElementById('drawer-close').addEventListener('click',()=>document.getElementById('drawer').classList.remove('open'));
 document.getElementById('drawer-line').addEventListener('click',()=>document.getElementById('drawer').classList.remove('open'));
+
+/* ── Sidebar accordion ───────────────────────────── */
+document.querySelectorAll('.pane-header').forEach(h=>{
+  h.addEventListener('click',()=>{
+    const body=h.nextElementSibling;
+    const isOpen=body.classList.contains('open');
+    h.classList.toggle('active',!isOpen);
+    body.classList.toggle('open',!isOpen);
+  });
+});
 
 /* ─── WebGL ───────────────────────────────────────────────── */
 let zoom=-6,panX=0,panY=0,cam=[1,0,0,0,1,0,0,0,1],dragging=false,lastMX=0,lastMY=0,mouseX=0,mouseY=0;
