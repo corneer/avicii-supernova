@@ -584,7 +584,7 @@ document.addEventListener('mousemove',e=>{const dpr=Math.min(devicePixelRatio,1.
 document.addEventListener('mouseup',()=>dragging=false);
 document.addEventListener('wheel',e=>{if(e.target.closest(pnls))return;e.preventDefault();velZoom+=e.deltaY*.003;},{passive:false});
 let tch={};
-document.addEventListener('touchstart',e=>{if(e.target.closest(pnls))return;e.preventDefault();for(let t of e.changedTouches)tch[t.identifier]={x:t.clientX,y:t.clientY};},{passive:false});
+document.addEventListener('touchstart',e=>{if(e.target.closest(pnls))return;if(e.target.tagName==='BUTTON'||e.target.tagName==='A'||e.target.closest('button,a,[role=button]'))return;e.preventDefault();for(let t of e.changedTouches)tch[t.identifier]={x:t.clientX,y:t.clientY};},{passive:false});
 document.addEventListener('touchmove',e=>{if(e.target.closest(pnls))return;e.preventDefault();if(e.touches.length===1){let t=e.touches[0],p=tch[t.identifier];if(p){velRotX=(t.clientX-p.x)*.005;velRotY=(t.clientY-p.y)*.005;}tch[t.identifier]={x:t.clientX,y:t.clientY};}else if(e.touches.length===2){let t0=e.touches[0],t1=e.touches[1],nd=Math.hypot(t1.clientX-t0.clientX,t1.clientY-t0.clientY),p0=tch[t0.identifier],p1=tch[t1.identifier];if(p0&&p1){let od=Math.hypot(p1.x-p0.x,p1.y-p0.y);velZoom-=(nd-od)*.006;}tch[t0.identifier]={x:t0.clientX,y:t0.clientY};tch[t1.identifier]={x:t1.clientX,y:t1.clientY};}},{passive:false});
 document.addEventListener('touchend',e=>{for(let t of e.changedTouches)delete tch[t.identifier];});
 
